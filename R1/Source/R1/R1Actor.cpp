@@ -13,13 +13,36 @@ AR1Actor::AR1Actor()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	Box = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Box"));
+	//Box = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Box"));
+
+	//ConstructorHelpers::FObjectFinder<UStaticMesh> FindMesh(TEXT("/Script/Engine.StaticMesh'/Game/USU0/SM_ChamferCube.SM_ChamferCube'"));
+	//if (FindMesh.Succeeded())
+	//{
+	//	Box->SetStaticMesh(FindMesh.Object);
+	//}
+
+	Body = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Body"));
+	RootComponent = Body;
+	Body->SetRelativeScale3D(FVector(4, 2, 0.5));
+
+	Head = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Head"));
+	Head->SetupAttachment(Body);
+	Head->SetRelativeLocationAndRotation(FVector(63, 11.5, 0), FRotator(0,0,0));		//Frotator =>y,z,x순으로
+	Head->SetRelativeScale3D(FVector(0.4, 0.3, 3.5));
+
+	Wing = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Wing"));
+	Wing->SetupAttachment(Body);
+	Wing->SetRelativeLocationAndRotation(FVector(0,40,0), FRotator(0,0,0));
+	Wing->SetRelativeScale3D(FVector(0.1, 8.3, 0.5));
 
 	ConstructorHelpers::FObjectFinder<UStaticMesh> FindMesh(TEXT("/Script/Engine.StaticMesh'/Game/USU0/SM_ChamferCube.SM_ChamferCube'"));
 	if (FindMesh.Succeeded())
 	{
-		Box->SetStaticMesh(FindMesh.Object);
+		Body->SetStaticMesh(FindMesh.Object);
+		Head->SetStaticMesh(FindMesh.Object);
+		Wing->SetStaticMesh(FindMesh.Object);
 	}
+
 }
 
 // Called when the game starts or when spawned
