@@ -5,9 +5,21 @@
 	"Description": "",
 	"Modules": [
 		{
-			"Name": "Test",
+			"Name": "R1",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine",
+				"CoreUObject"
+			]
+		},
+		{
+			"Name": "R1Editor",
+			"Type": "Editor",
+			"AdditionalDependencies": [
+				"Engine",
+				"CoreUObject"
+			]
 		}
 	],
 	"Plugins": [
