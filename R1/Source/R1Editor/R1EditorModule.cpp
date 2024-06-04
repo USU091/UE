@@ -1,7 +1,6 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+ï»¿// Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Modules/ModuleManager.h"
-#include "../R1/R1Actor.h"
 
 //IMPLEMENT_PRIMARY_GAME_MODULE( FDefaultGameModuleImpl, R1, "R1" );
-IMPLEMENT_MODULE(FDefaultModuleImpl, R1Editor);	//ÀÌ¸§Á¤ÀÇ ÇØÁÜ
+IMPLEMENT_MODULE(FDefaultModuleImpl, R1Editor);	//ï¿½Ì¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
