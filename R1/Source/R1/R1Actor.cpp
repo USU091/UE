@@ -17,8 +17,8 @@ void AR1Actor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Obj1 = NewObject<UR1Object>(); //스택 메모리가 아닌 멤버변수에 들고 있을 경우가 큼
-	Obj2 = NewObject<UR1Object>(); //스택 메모리가 아닌 멤버변수에 들고 있을 경우가 큼
+	//Obj1 = NewObject<UR1Object>(); //스택 메모리가 아닌 멤버변수에 들고 있을 경우가 큼
+	//Obj2 = NewObject<UR1Object>(); //스택 메모리가 아닌 멤버변수에 들고 있을 경우가 큼
 	
 	GEngine->ForceGarbageCollection(true);
 }
@@ -28,13 +28,13 @@ void AR1Actor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (Obj1 == nullptr)
-	{
-		UE_LOG(LogTemp, Log, TEXT("Obj1 Deleted"));
-	}
-	if (Obj2 == nullptr)
-	{
-		UE_LOG(LogTemp, Log, TEXT("Obj2 Deleted"));
-	}
+	//if (Obj1 == nullptr)
+	//{
+	//	UE_LOG(LogTemp, Log, TEXT("Obj1 Deleted"));
+	//}
+	//if (Obj2 == nullptr)
+	//{
+	//	UE_LOG(LogTemp, Log, TEXT("Obj2 Deleted"));
+	//}
 }
 
