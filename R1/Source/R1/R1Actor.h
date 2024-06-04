@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -6,8 +6,9 @@
 #include "GameFramework/Actor.h"
 #include "R1Actor.generated.h"		
 
-class UR1Object;	//
+class UR1Object;
 class UStaticMeshComponent;
+
 
 UCLASS()
 class R1_API AR1Actor : public AActor
@@ -31,5 +32,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite);
 	TObjectPtr<UStaticMeshComponent> Box;
 
+	UPROPERTY(EditAnywhere, Category = Battle);
+	TObjectPtr<class AActor> Target;
 
 };

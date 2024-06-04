@@ -3,9 +3,7 @@
 
 #include "R1Actor.h"
 #include "R1Object.h"
-#include "Kismet/GameplayStatics.h"
 #include "Components/StaticMeshComponent.h"
-
 
 // Sets default values
 AR1Actor::AR1Actor()
@@ -27,13 +25,6 @@ void AR1Actor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//Target = UGameplayStatics::GetActorOfClass(GetWorld(), AR1Actor::StaticClass());
-	TArray<AActor*> Actors;
-	UGameplayStatics::GetAllActorsWithTag(GetWorld(), TEXT("USU0"), Actors);
-	if (Actors.Num() > 0)
-	{
-		Target = Actors[0];
-	}
 }
 
 // Called every frame
@@ -41,23 +32,16 @@ void AR1Actor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (Target != nullptr)
-	{
-		//이동 거리 = 이동 속력 * 시간
-		float Speed = 50.0f;
-		float Distance = DeltaTime * Speed;		//매 프레임 이동하는 거리가 구해짐
 
-		FVector Location = GetActorLocation();	//현재 위치
+	//이동 거리 = 이동 속력 * 시간
+	float Speed = 50.0f;
+	float Distance = DeltaTime * Speed;		//매 프레임 이동하는 거리가 구해짐
 
-		FVector DirectionVector = Target->GetActorLocation() - GetActorLocation();
-		DirectionVector.Normalize();
-
-		//FVector NewLoacation = Location + DirectionVector * Distance;
-		//SetActorLocation(NewLoacation);
-
-		AddActorWorldOffset(DirectionVector * Distance);		//방향벡터만 구함
-	}
+	FVector Location = GetActorLocation();	//현재 위치
 
 
+	FVector NewLoacation = Location + FVector::ForwardVector * Distance;
+
+	SetActorLocation(NewLoacation);
 }
 
