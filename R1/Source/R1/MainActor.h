@@ -4,19 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "R1Actor.generated.h"		
+#include "MainActor.generated.h"
 
-class UR1Object;	//
-class UStaticMeshComponent;
+
 
 UCLASS()
-class R1_API AR1Actor : public AActor
+class R1_API AMainActor : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AR1Actor();
+	AMainActor();
 
 protected:
 	// Called when the game starts or when spawned
@@ -24,12 +23,11 @@ protected:
 
 public:	
 	// Called every frame
-
 	virtual void Tick(float DeltaTime) override;
 
-protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite);
-	TObjectPtr<UStaticMeshComponent> Box;
+	UPROPERTY()
+	TObjectPtr<class AR1Actor> Actor;
 
-
+	UPROPERTY()
+	TSubclassOf<AR1Actor> ActorClass;	//메타데이터 자체, 클래스 정보를 기입할 수도있게끔 선언
 };

@@ -8,7 +8,7 @@ public class R1Editor : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "R1" });	//종속성에 R1 추가
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "R1" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
