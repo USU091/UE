@@ -7,7 +7,7 @@
 #include "R1Actor.generated.h"		//generated.h 파일은 항상 include 마지막에 선언해줘야됨.순서.
 
 class UR1Object;	//클래스 전방선언해줌
-
+class UStaticMeshComponent;
 
 UCLASS()
 class R1_API AR1Actor : public AActor
@@ -24,21 +24,12 @@ protected:
 
 public:	
 	// Called every frame
+
 	virtual void Tick(float DeltaTime) override;
 
 protected:
+	UPROPERTY(VisibleAnywhere);
+	TObjectPtr<UStaticMeshComponent> Box;
 
-	//UR1Object* Obj1;
-
-	//UPROPERTY()
-	//UR1Object* Obj2;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Stat)
-	int32 Hp = 200;
-
-	UPROPERTY(VisibleAnywhere)
-	int32 Mp = 50;
-
-	UPROPERTY(EditAnywhere)
-	float Speed = 3.5f;
 
 };
