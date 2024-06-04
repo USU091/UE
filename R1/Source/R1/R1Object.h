@@ -14,4 +14,8 @@ class R1_API UR1Object : public UObject
 {
 	GENERATED_BODY()
 	
+public:
+	int32 Hp = 100;
+	int32 Mp = 50;
+	float Speed = 3.5f;
 };

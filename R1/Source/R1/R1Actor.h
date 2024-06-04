@@ -4,7 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "R1Actor.generated.h"
+#include "R1Actor.generated.h"		//generated.h 파일은 항상 include 마지막에 선언해줘야됨.순서.
+
+class UR1Object;	//클래스 전방선언해줌
+
 
 UCLASS()
 class R1_API AR1Actor : public AActor
@@ -24,5 +27,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
-	int32 Hp;
+
+	UR1Object* Obj1;
+
+	UPROPERTY()
+	UR1Object* Obj2;
 };
