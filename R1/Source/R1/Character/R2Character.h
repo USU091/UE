@@ -3,17 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Pawn.h"
-#include "R1Pawn.generated.h"
+#include "GameFramework/Character.h"
+#include "R2Character.generated.h"
 
 UCLASS()
-class R1_API AR1Pawn : public APawn
+class R1_API AR2Character : public ACharacter
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this pawn's properties
-	AR1Pawn();
+	// Sets default values for this character's properties
+	AR2Character();
 
 protected:
 	// Called when the game starts or when spawned
@@ -27,12 +27,6 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 protected:
-
-	UPROPERTY(Category=Character, VisibleAnywhere, BlueprintReadWrite)
-	TObjectPtr<class UCapsuleComponent> CapsuleComponent;
-
-	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadWrite)
-	TObjectPtr<class USkeletalMeshComponent> Mesh;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<class USpringArmComponent> SpringArm;
