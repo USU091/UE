@@ -55,7 +55,7 @@ void AR1PlayerController::Input_Move(const FInputActionValue& InputValue)
 	}
 	if(MovementVector.Y != 0)
 	{
-		FVector Direction = FVector::RightVector * MovementVector.Y;
+		FVector Direction = FVector::ForwardVector * MovementVector.Y;
 		GetPawn()->AddActorWorldOffset(Direction * 50.0f);
 	}
 
