@@ -48,15 +48,25 @@ void AR1PlayerController::Input_Move(const FInputActionValue& InputValue)
 {
 	FVector2D MovementVector = InputValue.Get<FVector2D>();
 
+	//AddMovementInput  => 내부적으로 DaltaTime곱해주는 연산을 함. 대각선 속도 연산도 알아서 처리해줌
+
 	if (MovementVector.X != 0)
 	{
-		FVector Direction = FVector::ForwardVector * MovementVector.X;
-		GetPawn()->AddActorWorldOffset(Direction * 50.0f);
+		//FVector Direction = FVector::ForwardVector * MovementVector.X;
+		//GetPawn()->AddActorWorldOffset(Direction * 50.0f);	//* Deltatime
+
+		FRotator Rotator = GetControlRotation();		//PlayerController의 회전값을 가져옴
+		FVector Direction = UKismetMathLibrary::GetForwardVector(FRotator(0, Rotator.Yaw, 0));
+		GetPawn()->AddMovementInput(Direction, MovementVector.X);	//입력하는 방향을 가져옴
 	}
 	if(MovementVector.Y != 0)
 	{
-		FVector Direction = FVector::RightVector * MovementVector.Y;
-		GetPawn()->AddActorWorldOffset(Direction * 50.0f);
+		//FVector Direction = FVector::RightVector * MovementVector.Y;
+		//GetPawn()->AddActorWorldOffset(Direction * 50.0f); //* Deltatime
+
+		FRotator Rotator = GetControlRotation();
+		FVector Direction = UKismetMathLibrary::GetRightVector(FRotator(0, Rotator.Yaw, 0));
+		GetPawn()->AddMovementInput(Direction, MovementVector.Y);	//입력하는 방향을 가져옴
 	}
 
 
