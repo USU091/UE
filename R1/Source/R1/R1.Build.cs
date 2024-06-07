@@ -14,7 +14,7 @@ public class R1 : ModuleRules
 		});
 
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine",
-			"InputCore", "EnhancedInput" });
+			"InputCore", "EnhancedInput", "GameplayTags" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
