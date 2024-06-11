@@ -13,11 +13,13 @@
  */
 class UR1AssetData;
 
+DECLARE_DELEGATE_TwoParams(FAsyncLoadCompletedDelegate, const FName& /*AssetName or Label*/, UObject* /*LoadedAsset*/);
 //Resources Manager의 역할. Asset을 관리해주는 역할. 초반에 Asset을 읽어서 들고있음
 UCLASS()
 class R1_API UR1AssetManager : public UAssetManager
 {
 	GENERATED_BODY()
+	FAsyncLoadCompletedDelegate test;
 
 public:
 
@@ -38,6 +40,10 @@ public:
 	static void LoadSyncByPath(const FSoftObjectPath& AssetPath);
 	static void LoadSyncByName(const FName& AssetName);
 	static void LoadSyncByLabel(const FName& Label);
+
+	//비동기방식의 함수
+	static void LoadAsyncByPath(const FSoftObjectPath& AssetPath, FAsyncLoadCompletedDelegate CompletedDelegate = FAsyncLoadCompletedDelegate());
+	static void LoadAsyncByName(const FSoftObjectPath& AssetName, FAsyncLoadCompletedDelegate CompletedDelegate = FAsyncLoadCompletedDelegate());
 
 	//릴리즈 시리즈
 	static void ReleaseByPath(const FSoftObjectPath& AssetPath);
