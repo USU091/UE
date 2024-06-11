@@ -3,25 +3,35 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
-#include "R2Character.generated.h"
+#include "Character/R2Character.h"
+#include "R1Player.generated.h"
 
+/**
+ * 
+ */
 UCLASS()
-class R1_API AR2Character : public ACharacter
+class R1_API AR1Player : public AR2Character
 {
 	GENERATED_BODY()
-
 public:
 	// Sets default values for this character's properties
-	AR2Character();
+	AR1Player();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 
+protected:
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	TObjectPtr<class USpringArmComponent> SpringArm;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	TObjectPtr<class UCameraComponent> Camera;
+	
 };

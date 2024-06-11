@@ -43,7 +43,7 @@ public:
 
 	//비동기방식의 함수
 	static void LoadAsyncByPath(const FSoftObjectPath& AssetPath, FAsyncLoadCompletedDelegate CompletedDelegate = FAsyncLoadCompletedDelegate());
-	static void LoadAsyncByName(const FSoftObjectPath& AssetName, FAsyncLoadCompletedDelegate CompletedDelegate = FAsyncLoadCompletedDelegate());
+	static void LoadAsyncByName(const FName& AssetName, FAsyncLoadCompletedDelegate CompletedDelegate = FAsyncLoadCompletedDelegate());
 
 	//릴리즈 시리즈
 	static void ReleaseByPath(const FSoftObjectPath& AssetPath);
