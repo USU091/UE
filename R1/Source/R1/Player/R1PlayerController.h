@@ -27,25 +27,18 @@ private:
 	virtual void SetupInputComponent() override;
 
 private:
-	void Input_Test(const FInputActionValue& InputValue);
 	void Input_Move(const FInputActionValue& InputValue);
 	void Input_Turn(const FInputActionValue& InputValue);
 
 protected:
-	UPROPERTY(Category=Input, EditAnywhere)
-	TObjectPtr<class UInputMappingContext> InputMappingContext;
+	//UPROPERTY(Category=Input, EditAnywhere)
+	//TObjectPtr<class UInputMappingContext> InputMappingContext;
 
-	UPROPERTY(Category = Input, EditAnywhere)
-	TObjectPtr<class UInputAction> TestAction;
-
-	UPROPERTY(Category = Input, EditAnywhere)
-	TObjectPtr<class UInputAction> MoveAction;
+	//UPROPERTY(Category = Input, EditAnywhere)
+	//TObjectPtr<class UInputAction> MoveAction;
 
 
-	UPROPERTY(Category = Input, EditAnywhere)
-	TObjectPtr<class UInputAction> TurnAction;
-
-
-
+	//UPROPERTY(Category = Input, EditAnywhere)
+	//TObjectPtr<class UInputAction> TurnAction;
 
 };

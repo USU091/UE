@@ -34,6 +34,8 @@ class R1_API UR1InputData : public UDataAsset
 	GENERATED_BODY()
 
 public:
+	const UInputAction* FindInputActionByTag(const FGameplayTag& InputTag) const;
+public:
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UInputMappingContext> InputMappingContext;
 	

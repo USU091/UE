@@ -34,6 +34,8 @@ struct FAssetSet
 public:
 	UPROPERTY(EditDefaultsOnly)
 	TArray<FAssetEntry> AssetEntries;
+
+
 };
 /**
  * 
