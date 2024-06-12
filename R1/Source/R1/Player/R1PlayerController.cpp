@@ -9,11 +9,20 @@
 #include "Data/R1InputData.h"
 #include "R1GameplayTags.h"
 #include "Character/R2Character.h"
+#include "NiagaraSystem.h"
+#include "NiagaraFunctionLibrary.h"
+#include "Blueprint/AIBlueprintHelperLibrary.h"
+
 
 
 AR1PlayerController::AR1PlayerController(const FObjectInitializer& ObjectInitializer)
 	:Super(ObjectInitializer)
 {
+	bShowMouseCursor = true;
+	DefaultMouseCursor = EMouseCursor::Default;
+	CachedDestination = FVector::ZeroVector;
+	FollowTime = 0.f;
+
 
 }
 
@@ -39,70 +48,57 @@ void AR1PlayerController::SetupInputComponent()
 	if (const UR1InputData* InputData = UR1AssetManager::GetAssetByName<UR1InputData>("InputData"))
 	{
 		UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
+		auto Action1 = InputData->FindInputActionByTag(R1GameplayTags::Input_Action_SetDestination);
 
-		auto Action1 = InputData->FindInputActionByTag(R1GameplayTags::Input_Action_Move);
-		EnhancedInputComponent->BindAction(Action1, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
-
-		auto Action2 = InputData->FindInputActionByTag(R1GameplayTags::Input_Action_Turn);
-		EnhancedInputComponent->BindAction(Action2, ETriggerEvent::Triggered, this, &ThisClass::Input_Turn);
-
-		auto Action3 = InputData->FindInputActionByTag(R1GameplayTags::Input_Action_Jump);
-		EnhancedInputComponent->BindAction(Action3, ETriggerEvent::Triggered, this, &ThisClass::Input_Jump);
-
-		auto Action4 = InputData->FindInputActionByTag(R1GameplayTags::Input_Action_Attack);
-		EnhancedInputComponent->BindAction(Action4, ETriggerEvent::Triggered, this, &ThisClass::Input_Attack);
+		EnhancedInputComponent->BindAction(Action1, ETriggerEvent::Started, this, &ThisClass::OnInputStarted);
+		EnhancedInputComponent->BindAction(Action1, ETriggerEvent::Triggered, this, &ThisClass::OnSetDestinationTriggered);
+		EnhancedInputComponent->BindAction(Action1, ETriggerEvent::Completed, this, &ThisClass::OnSetDestinationReleased);
+		EnhancedInputComponent->BindAction(Action1, ETriggerEvent::Canceled, this, &ThisClass::OnSetDestinationReleased);
 	}
 }
 
-void AR1PlayerController::Input_Move(const FInputActionValue& InputValue)
+void AR1PlayerController::OnInputStarted()
 {
-	FVector2D MovementVector = InputValue.Get<FVector2D>();
-
-	//AddMovementInput  => 내부적으로 DaltaTime곱해주는 연산을 함. 대각선 속도 연산도 알아서 처리해줌
-
-	if (MovementVector.X != 0)
-	{
-		//FVector Direction = FVector::ForwardVector * MovementVector.X;
-		//GetPawn()->AddActorWorldOffset(Direction * 50.0f);	//* Deltatime
-
-		FRotator Rotator = GetControlRotation();		//PlayerController의 회전값을 가져옴
-		FVector Direction = UKismetMathLibrary::GetForwardVector(FRotator(0, Rotator.Yaw, 0));
-		GetPawn()->AddMovementInput(Direction, MovementVector.X);	//입력하는 방향을 가져옴
-	}
-	if(MovementVector.Y != 0)
-	{
-		//FVector Direction = FVector::RightVector * MovementVector.Y;
-		//GetPawn()->AddActorWorldOffset(Direction * 50.0f); //* Deltatime
-
-		FRotator Rotator = GetControlRotation();
-		FVector Direction = UKismetMathLibrary::GetRightVector(FRotator(0, Rotator.Yaw, 0));
-		GetPawn()->AddMovementInput(Direction, MovementVector.Y);	//입력하는 방향을 가져옴
-	}
-
-
+	StopMovement();
 }
 
-void AR1PlayerController::Input_Turn(const FInputActionValue& InputValue)
+void AR1PlayerController::OnSetDestinationTriggered()
 {
-	float Val = InputValue.Get<float>();
-	AddYawInput(Val);
+	// We flag that the input is being pressed
+	FollowTime += GetWorld()->GetDeltaSeconds();
 
-}
+	// We look for the location in the world where the player has pressed the input
+	FHitResult Hit;
 
-void AR1PlayerController::Input_Jump(const FInputActionValue& InputValue)
-{
-	if (AR2Character* MyPlayer = Cast<AR2Character>(GetPawn()))
+	bool bHitSuccessful = GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, OUT  Hit);
+
+	// If we hit a surface, cache the location
+	if (bHitSuccessful)
 	{
-		MyPlayer->Jump();
+		CachedDestination = Hit.Location;
 	}
-}
 
-void AR1PlayerController::Input_Attack(const FInputActionValue& InputValue)
-{
-	UE_LOG(LogTemp, Log, TEXT("Attack"));
-
-	if (AttackMongtage)
+	// Move towards mouse pointer or touch
+	APawn* ControlledPawn = GetPawn();
+	if (ControlledPawn != nullptr)
 	{
-		Cast<AR2Character>(GetPawn())->PlayAnimMontage(AttackMongtage);
+		FVector WorldDirection = (CachedDestination - ControlledPawn->GetActorLocation()).GetSafeNormal();
+		ControlledPawn->AddMovementInput(WorldDirection, 1.0, false);
 	}
+
 }
+
+void AR1PlayerController::OnSetDestinationReleased()
+{
+	// If it was a short press
+	if (FollowTime <= ShortPressThreshold)
+	{
+		// We move there and spawn some particles
+		UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, CachedDestination);
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, FXCursor, CachedDestination, FRotator::ZeroRotator, FVector(1.f, 1.f, 1.f), true, true, ENCPoolMethod::None, true);
+	}
+
+	FollowTime = 0.f;
+}
+
+

@@ -7,6 +7,7 @@
 #include "R1PlayerController.generated.h"
 
 struct FInputActionValue;
+class UNiagaraSystem;
 
 /**
  * 
@@ -27,23 +28,26 @@ private:
 	virtual void SetupInputComponent() override;
 
 private:
-	void Input_Move(const FInputActionValue& InputValue);
-	void Input_Turn(const FInputActionValue& InputValue);
-	void Input_Jump(const FInputActionValue& InputValue);
-	void Input_Attack(const FInputActionValue& InputValue);
 
-protected:
-	//UPROPERTY(Category=Input, EditAnywhere)
-	//TObjectPtr<class UInputMappingContext> InputMappingContext;
-
-	//UPROPERTY(Category = Input, EditAnywhere)
-	//TObjectPtr<class UInputAction> MoveAction;
+	void OnInputStarted();
+	void OnSetDestinationTriggered();
+	void OnSetDestinationReleased();
 
 
-	//UPROPERTY(Category = Input, EditAnywhere)
-	//TObjectPtr<class UInputAction> TurnAction;
 
-	UPROPERTY(EditAnywhere);
-	TObjectPtr<class UAnimMontage> AttackMongtage;
+private:
+	//void Input_SetDestination(const FInputActionValue& InputValue);
 
+public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	float ShortPressThreshold = 0.3f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	TObjectPtr<UNiagaraSystem> FXCursor;
+
+private:
+
+	FVector CachedDestination;
+	float FollowTime;	// For how long it has been pressed
 };
