@@ -43,4 +43,7 @@ protected:
 	//UPROPERTY(Category = Input, EditAnywhere)
 	//TObjectPtr<class UInputAction> TurnAction;
 
+	UPROPERTY(EditAnywhere);
+	TObjectPtr<class UAnimMontage> AttackMongtage;
+
 };
