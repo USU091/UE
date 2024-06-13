@@ -6,6 +6,11 @@
 #include "Character/R2Character.h"
 #include "R1Player.generated.h"
 
+DECLARE_DELEGATE(FUSU0);
+DECLARE_DELEGATE_OneParam(FUSU0, int);
+
+DECLARE_MULTICAST_DELEGATE(FUSU0MulticastDelegate)
+
 /**
  * 
  */
@@ -25,6 +30,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+private:
+	UFUNCTION()
+	void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 protected:
 
@@ -34,4 +42,15 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<class UCameraComponent> Camera;
 	
+public:
+
+	UFUNCTION()
+	void TestFunc()
+	{
+
+	}
+
+
+	FUSU0 Usu0Delegate;
+	FUSU0MulticastDelegate MulticastDelegate;
 };
