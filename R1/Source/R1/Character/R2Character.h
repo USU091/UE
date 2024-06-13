@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Interface/R1HighlightInterface.h"
 #include "R2Character.generated.h"
 
 UCLASS()
-class R1_API AR2Character : public ACharacter
+class R1_API AR2Character : public ACharacter, public IR1HighlightInterface
 {
 	GENERATED_BODY()
 
@@ -22,6 +23,15 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+public:
+	virtual void Highlight() override;
+	virtual void UnHighlight() override;
+
+protected:
+
+	UPROPERTY(BlueprintReadOnly)
+	bool bHighlighted = false;
 
 
 };

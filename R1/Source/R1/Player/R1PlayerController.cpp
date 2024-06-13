@@ -57,6 +57,57 @@ void AR1PlayerController::SetupInputComponent()
 	}
 }
 
+void AR1PlayerController::PlayerTick(float Deltatime)
+{
+	Super::PlayerTick(Deltatime);
+
+	TickCursorTrace();
+}
+
+void AR1PlayerController::TickCursorTrace()
+{
+	if (bMousePressed)
+	{
+		return;
+	}
+
+	FHitResult OutCursorHit;
+	if (GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, OUT OutCursorHit) == false)
+	{
+		return;
+	}
+
+	AR2Character* LocalHighlightActor =  Cast<AR2Character>(OutCursorHit.GetActor());
+	if (LocalHighlightActor == nullptr)
+	{
+		// 있었는데 없어짐
+		if (HighlightActor)
+		{
+			HighlightActor->UnHighlight();
+		}
+	}
+	else
+	{
+		//캐릭터 선택됨
+		if (HighlightActor)
+		{
+			//원래 있었는데, 다른 애였음
+			if (HighlightActor != LocalHighlightActor)
+			{
+				HighlightActor->UnHighlight();
+				LocalHighlightActor->Highlight();
+			}
+		}
+		else
+		{
+			//원래 없었고 새로운 타겟임
+			LocalHighlightActor->Highlight();
+		}
+	}
+
+	HighlightActor = LocalHighlightActor;
+}
+
 void AR1PlayerController::OnInputStarted()
 {
 	StopMovement();
@@ -69,7 +120,6 @@ void AR1PlayerController::OnSetDestinationTriggered()
 
 	// We look for the location in the world where the player has pressed the input
 	FHitResult Hit;
-
 	bool bHitSuccessful = GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, OUT  Hit);
 
 	// If we hit a surface, cache the location

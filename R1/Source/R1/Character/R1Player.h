@@ -7,7 +7,7 @@
 #include "R1Player.generated.h"
 
 DECLARE_DELEGATE(FUSU0);
-DECLARE_DELEGATE_OneParam(FUSU0, int);
+//DECLARE_DELEGATE_OneParam(FUSU0, int);
 
 DECLARE_MULTICAST_DELEGATE(FUSU0MulticastDelegate)
 
@@ -45,11 +45,7 @@ protected:
 public:
 
 	UFUNCTION()
-	void TestFunc()
-	{
-
-	}
-
+	void TestFunc() {}
 
 	FUSU0 Usu0Delegate;
 	FUSU0MulticastDelegate MulticastDelegate;
